@@ -1,14 +1,14 @@
-# AlligatorGar - 強力な多機能自動化ツール
-# 必要ライブラリ一覧
+# AlligatorGar - Multi-functional Automation Tool
+# Required libraries
 
-# PDF処理
+# PDF processing
 PyMuPDF==1.21.1
 
-# 画像処理  
+# Image processing  
 Pillow==8.4.0
 
-# レポート生成
+# Report generation
 reportlab==3.6.0
 
-# exe生成（開発時のみ）
+# Executable generation (development only)
 pyinstaller==5.13.2

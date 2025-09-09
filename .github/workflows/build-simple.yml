@@ -18,7 +18,7 @@ jobs:
       
     # ステップ2: Python環境準備
     - name: 🐍 Python 3.7 セットアップ
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v6
       with:
         python-version: '3.7.9'
         architecture: 'x86'     # 32bit版（古いWindows対応）

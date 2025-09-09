@@ -62,10 +62,10 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/jdssjp/AlligatorGar"
-Repository = "https://github.com/jdssjp/AlligatorGar"
-Issues = "https://github.com/jdssjp/AlligatorGar/issues"
-Documentation = "https://github.com/jdssjp/AlligatorGar#readme"
+Homepage = "https://github.com/JdssJp/AlligatorGar"
+Repository = "https://github.com/JdssJp/AlligatorGar"
+Issues = "https://github.com/JdssJp/AlligatorGar/issues"
+Documentation = "https://github.com/JdssJp/AlligatorGar#readme"
 
 [project.scripts]
 alligator-gar-gui = "gui_main:main"

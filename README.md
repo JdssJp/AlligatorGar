@@ -7,7 +7,7 @@
 ### Ubuntu開発環境
 ```bash
 # 1. リポジトリクローン
-git clone https://github.com/jdssjp/AlligatorGar.git
+git clone https://github.com/JdssJp/AlligatorGar.git
 cd AlligatorGar
 
 # 2. 開発環境セットアップ

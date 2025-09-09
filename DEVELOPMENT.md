@@ -11,7 +11,7 @@
 
 ```bash
 # 1. リポジトリクローン
-git clone https://github.com/jdssjp/AlligatorGar.git
+git clone https://github.com/JdssJp/AlligatorGar.git
 cd AlligatorGar
 
 # 2. 開発環境自動セットアップ
@@ -318,7 +318,7 @@ safety check
 
 ### 問題報告
 
-- [GitHub Issues](https://github.com/jdssjp/AlligatorGar/issues)
+- [GitHub Issues](https://github.com/JdssJp/AlligatorGar/issues)
 - バグレポート時は実行環境情報を含める (`make info`)
 
 ### 開発者向けコミュニケーション

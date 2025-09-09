@@ -3,7 +3,7 @@
 ## 📋 リポジトリ作成手順
 
 ### 1. GitHubでリポジトリ作成
-1. https://github.com/jdssjp にログイン
+1. https://github.com/JdssJp にログイン
 2. **New repository** クリック
 3. リポジトリ設定:
    - **Repository name**: `AlligatorGar`
@@ -21,7 +21,7 @@ git commit -m "🐊 初回コミット: AlligatorGar多機能自動化ツール"
 
 # リモートリポジトリ追加
 git branch -M main
-git remote add origin https://github.com/jdssjp/AlligatorGar.git
+git remote add origin https://github.com/JdssJp/AlligatorGar.git
 git push -u origin main
 ```
 

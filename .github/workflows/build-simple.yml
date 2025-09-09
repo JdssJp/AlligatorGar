@@ -14,7 +14,7 @@ jobs:
     steps:
     # ステップ1: ソースコード取得
     - name: 📥 ソースコード取得
-      uses: actions/checkout@v3
+      uses: actions/checkout@v5
       
     # ステップ2: Python環境準備
     - name: 🐍 Python 3.7 セットアップ

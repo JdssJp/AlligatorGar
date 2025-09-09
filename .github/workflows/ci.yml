@@ -19,7 +19,7 @@ jobs:
     steps:
     # ソースコード取得
     - name: 📥 ソースコード取得
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     # Python環境セットアップ
     - name: 🐍 Python ${{ matrix.python-version }} セットアップ
@@ -98,7 +98,7 @@ jobs:
     
     steps:
     - name: 📥 ソースコード取得
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: 🐍 Python セットアップ
       uses: actions/setup-python@v4
@@ -140,7 +140,7 @@ jobs:
     
     steps:
     - name: 📥 ソースコード取得
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: 🐍 Python セットアップ
       uses: actions/setup-python@v4
@@ -178,7 +178,7 @@ jobs:
     
     steps:
     - name: 📥 ソースコード取得
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: 🐍 Python セットアップ
       uses: actions/setup-python@v4

@@ -83,7 +83,7 @@ jobs:
         
     # 成果物保存
     - name: 💾 テスト結果保存
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: test-results-python-${{ matrix.python-version }}
@@ -126,7 +126,7 @@ jobs:
       continue-on-error: true
       
     - name: 📤 セキュリティレポートアップロード
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: security-reports

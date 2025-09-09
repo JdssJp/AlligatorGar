@@ -120,7 +120,7 @@ jobs:
         
     # ステップ9: 成果物アップロード（開発者向け）
     - name: 📤 成果物アップロード
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: AlligatorGar実行ファイル
         path: |
@@ -131,7 +131,7 @@ jobs:
     # ステップ10: リリースファイル追加
     - name: 🚀 リリースファイル追加
       if: github.event_name == 'release'
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: |
           dist/AlligatorGar_GUI.exe

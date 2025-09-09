@@ -1,0 +1,192 @@
+# AlligatorGar プロジェクト設定
+
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alligator-gar"
+version = "1.0.0"
+description = "🐊 強力な多機能自動化ツール - PDF処理・スタンプ・印刷自動化"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "jdssjp", email = "jdssjp@example.com"}
+]
+maintainers = [
+    {name = "jdssjp", email = "jdssjp@example.com"}
+]
+keywords = ["pdf", "automation", "printing", "document-processing", "gui"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: System Administrators", 
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9", 
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Office/Business",
+    "Topic :: System :: Archiving",
+    "Topic :: Utilities"
+]
+requires-python = ">=3.8"
+dependencies = [
+    "PyMuPDF>=1.21.1",
+    "Pillow>=8.4.0", 
+    "reportlab>=3.6.0",
+    "pyinstaller>=5.13.2"
+]
+
+[project.optional-dependencies]
+dev = [
+    "coverage>=6.0.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "pytest-xdist>=3.0.0",
+    "flake8>=6.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+    "bandit>=1.7.0",
+    "safety>=2.3.0",
+    "pre-commit>=3.0.0"
+]
+docs = [
+    "sphinx>=6.0.0",
+    "sphinx-rtd-theme>=1.2.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/jdssjp/AlligatorGar"
+Repository = "https://github.com/jdssjp/AlligatorGar"
+Issues = "https://github.com/jdssjp/AlligatorGar/issues"
+Documentation = "https://github.com/jdssjp/AlligatorGar#readme"
+
+[project.scripts]
+alligator-gar-gui = "gui_main:main"
+alligator-gar-console = "process_enhanced:main"
+
+# ===== ツール設定 =====
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+exclude = ["tests*", "venv*", "build*", "dist*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    venv
+  | build
+  | dist
+  | __pycache__
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+exclude = [
+    'venv/',
+    'build/',
+    'dist/',
+    'tests/'
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--verbose",
+    "--tb=short", 
+    "--strict-markers",
+    "--color=yes"
+]
+markers = [
+    "slow: 時間のかかるテスト",
+    "integration: 統合テスト",
+    "unit: ユニットテスト", 
+    "gui: GUI関連テスト",
+    "pdf: PDF処理テスト",
+    "network: ネットワーク関連テスト",
+    "windows_only: Windows専用テスト"
+]
+
+[tool.coverage.run]
+source = ["."]
+branch = true
+omit = [
+    "tests/*",
+    "test_*.py", 
+    "venv/*",
+    "*/venv/*",
+    "*/site-packages/*",
+    "__pycache__/*",
+    "*/__pycache__/*",
+    "*.pyc",
+    "build/*",
+    "dist/*",
+    "setup.py",
+    "setup-ubuntu.sh"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "raise AssertionError", 
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "if os.name == 'nt':",
+    "if sys.platform.startswith('win'):"
+]
+fail_under = 70
+show_missing = true
+
+[tool.coverage.html]
+directory = "htmlcov"
+title = "AlligatorGar Test Coverage"
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+[tool.bandit]
+exclude_dirs = ["tests", "venv", "build", "dist"]
+skips = ["B101"]  # assert_used のスキップ
+
+[tool.bandit.assert_used]
+skips = ['*_test.py', '*/test_*.py']
+
+[tool.pylint.main]
+max-line-length = 88
+disable = [
+    "missing-docstring",
+    "invalid-name",
+    "too-few-public-methods"
+]
+
+[tool.pylint.format]
+max-line-length = 88

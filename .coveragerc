@@ -1,0 +1,64 @@
+# テストカバレッジ設定
+
+[run]
+source = .
+branch = True
+omit = 
+    # テストファイルは除外
+    tests/*
+    test_*.py
+    
+    # 仮想環境は除外
+    venv/*
+    */venv/*
+    */site-packages/*
+    
+    # 設定・ビルドファイルは除外
+    setup.py
+    setup-ubuntu.sh
+    
+    # 一時ファイル・キャッシュは除外
+    __pycache__/*
+    */__pycache__/*
+    *.pyc
+    
+    # 外部生成ファイル
+    build/*
+    dist/*
+
+[report]
+# レポート設定
+exclude_lines =
+    # デフォルト除外行
+    pragma: no cover
+    
+    # デバッグ用コード
+    def __repr__
+    if self.debug:
+    
+    # 例外処理
+    raise AssertionError
+    raise NotImplementedError
+    
+    # 条件分岐（通常実行されない）
+    if 0:
+    if __name__ == .__main__.:
+    
+    # プラットフォーム固有
+    if os.name == 'nt':
+    if sys.platform.startswith('win'):
+
+# 最小カバレッジ率
+fail_under = 70
+
+# 表示設定
+show_missing = True
+skip_covered = False
+skip_empty = False
+
+[html]
+directory = htmlcov
+title = AlligatorGar Test Coverage
+
+[xml]
+output = coverage.xml

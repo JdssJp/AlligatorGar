@@ -1,0 +1,193 @@
+name: AlligatorGar Auto Build
+
+# いつ実行するか
+on:
+  release:
+    types: [published]         # リリース公開時に実行
+  workflow_dispatch:           # 手動実行も可能
+
+jobs:
+  build-windows-exe:
+    name: Windows実行ファイル生成
+    runs-on: windows-latest    # Windows環境で実行
+    
+    steps:
+    # ステップ1: ソースコード取得
+    - name: 📥 ソースコード取得
+      uses: actions/checkout@v3
+      
+    # ステップ2: Python環境準備
+    - name: 🐍 Python 3.7 セットアップ
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.7.9'
+        architecture: 'x86'     # 32bit版（古いWindows対応）
+        
+    # ステップ3: 必要ライブラリインストール
+    - name: 📚 ライブラリインストール
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    # ステップ4: 基本動作テスト
+    - name: 🧪 基本テスト実行
+      run: |
+        python test_basic.py
+      continue-on-error: true  # テスト失敗でもビルド続行
+      
+    # ステップ5: スタンプ画像作成
+    - name: 🎨 スタンプ画像作成
+      run: |
+        echo Creating stamp.svg...
+        echo '<?xml version="1.0" encoding="UTF-8"?>' > stamp.svg
+        echo '<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">' >> stamp.svg
+        echo '  <circle cx="150" cy="150" r="120" fill="none" stroke="#CC0000" stroke-width="8"/>' >> stamp.svg
+        echo '  <line x1="70" y1="110" x2="230" y2="110" stroke="#CC0000" stroke-width="4"/>' >> stamp.svg
+        echo '  <line x1="70" y1="190" x2="230" y2="190" stroke="#CC0000" stroke-width="4"/>' >> stamp.svg
+        echo '  <text x="150" y="95" text-anchor="middle" font-size="36" font-weight="bold" fill="#CC0000">済</text>' >> stamp.svg
+        echo '  <text x="150" y="225" text-anchor="middle" font-size="24" font-weight="bold" fill="#CC0000">学徒課</text>' >> stamp.svg
+        echo '</svg>' >> stamp.svg
+        echo ✓ stamp.svg created
+      shell: cmd
+      
+    # ステップ6: GUI版exe生成
+    - name: 🖥️ GUI版exe生成
+      run: |
+        echo Building GUI version...
+        pyinstaller --onefile --windowed --name=AlligatorGar_GUI --add-data="stamp.svg;." gui_main.py
+        if exist "dist\AlligatorGar_GUI.exe" (
+          echo ✓ GUI版exe生成成功
+        ) else (
+          echo ✗ GUI版exe生成失敗
+          exit /b 1
+        )
+      shell: cmd
+      
+    # ステップ7: Console版exe生成  
+    - name: 🖤 Console版exe生成
+      run: |
+        echo Building Console version...
+        pyinstaller --onefile --console --name=AlligatorGar_Console --add-data="stamp.svg;." process_enhanced.py
+        if exist "dist\AlligatorGar_Console.exe" (
+          echo ✓ Console版exe生成成功
+        ) else (
+          echo ✗ Console版exe生成失敗
+          exit /b 1
+        )
+      shell: cmd
+      
+    # ステップ8: 配布パッケージ作成
+    - name: 📦 配布パッケージ作成
+      run: |
+        echo Creating release packages...
+        
+        REM 配布フォルダ作成
+        mkdir release
+        
+        REM GUI版パッケージ
+        mkdir "release\GUI版"
+        copy "dist\AlligatorGar_GUI.exe" "release\GUI版\"
+        copy stamp.svg "release\GUI版\" >nul 2>&1
+        
+        echo AlligatorGar GUI版 > "release\GUI版\README.txt"
+        echo ==================== >> "release\GUI版\README.txt"
+        echo. >> "release\GUI版\README.txt"
+        echo 使用方法: >> "release\GUI版\README.txt"
+        echo 1. AlligatorGar_GUI.exe をダブルクリック >> "release\GUI版\README.txt"
+        echo 2. 設定画面でフォルダを指定 >> "release\GUI版\README.txt"
+        echo 3. 監視開始ボタンを押す >> "release\GUI版\README.txt"
+        echo. >> "release\GUI版\README.txt"
+        echo 対応OS: Windows 10/11 >> "release\GUI版\README.txt"
+        echo Python環境: 不要 >> "release\GUI版\README.txt"
+        
+        REM Console版パッケージ  
+        mkdir "release\Console版"
+        copy "dist\AlligatorGar_Console.exe" "release\Console版\"
+        copy stamp.svg "release\Console版\" >nul 2>&1
+        
+        echo AlligatorGar Console版 > "release\Console版\README.txt"
+        echo ======================= >> "release\Console版\README.txt"  
+        echo. >> "release\Console版\README.txt"
+        echo 使用方法: >> "release\Console版\README.txt"
+        echo 1. AlligatorGar_Console.exe をダブルクリック >> "release\Console版\README.txt"
+        echo 2. config.json が自動生成されます >> "release\Console版\README.txt"
+        echo 3. 設定を編集して再実行 >> "release\Console版\README.txt"
+        echo. >> "release\Console版\README.txt"
+        echo サーバー運用に最適 >> "release\Console版\README.txt"
+        
+        echo ✓ 配布パッケージ作成完了
+      shell: cmd
+        
+    # ステップ9: 成果物アップロード（開発者向け）
+    - name: 📤 成果物アップロード
+      uses: actions/upload-artifact@v3
+      with:
+        name: AlligatorGar実行ファイル
+        path: |
+          release/
+          dist/*.exe
+        retention-days: 30
+        
+    # ステップ10: リリースファイル追加
+    - name: 🚀 リリースファイル追加
+      if: github.event_name == 'release'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          dist/AlligatorGar_GUI.exe
+          dist/AlligatorGar_Console.exe
+        body: |
+          ## 🐊 AlligatorGar - 強力な多機能自動化ツール
+          
+          **Python初心者でも安心！** 完全スタンドアロン実行ファイル
+          
+          ### 📥 ダウンロード
+          
+          #### 🖥️ GUI版（初心者推奨）
+          **ファイル**: `AlligatorGar_GUI.exe`
+          
+          **特徴**:
+          - 👆 わかりやすい画面操作
+          - 📊 処理状況をリアルタイム表示
+          - ⚙️ 設定画面で簡単設定
+          - 🧪 接続テスト機能付き
+          
+          #### 🖤 Console版（サーバー・上級者向け）
+          **ファイル**: `AlligatorGar_Console.exe`
+          
+          **特徴**:
+          - ⚡ 軽量・高速
+          - 🖥️ サーバー運用最適
+          - 📝 JSONファイル設定
+          - 📊 詳細ログ出力
+          
+          ### 💻 動作環境
+          - Windows 10/11 (32bit/64bit対応)
+          - Python環境不要
+          - 管理者権限不要
+          
+          ### 🎯 現在の主な機能
+          - 📁 ZIP監視・自動処理
+          - 🏷️ PDFスタンプ追加（日付入り「済」印）  
+          - 📄 B5 2面付けレイアウト
+          - 🖨️ 自動印刷・保存
+          - 🌐 ネットワーク共有対応
+          
+          ### 🚀 将来の機能拡張
+          - 様々な便利機能を追加予定
+          - カスタマイズ可能な自動化ワークフロー
+          - 効率的な業務処理ツール群
+          
+          ### 📋 使用方法
+          1. exe ファイルをダウンロード
+          2. ダブルクリックで実行
+          3. 画面の指示に従って設定
+          
+          ### 🔰 初心者サポート
+          - GUI版なら直感的に操作可能
+          - エラー時は詳細メッセージ表示
+          - ログファイルで問題を特定
+          
+          **困ったときは**: ログファイル（*.log）の内容を確認してください
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

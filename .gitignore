@@ -1,0 +1,44 @@
+# Python初心者向け .gitignore
+
+# Python関連
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# PyInstaller関連
+build/
+dist/
+*.spec
+
+# 一時ファイル
+*.log
+*.tmp
+temp_stamp_*.png
+test_*.pdf
+test_*.txt
+
+# 設定ファイル（個人環境）
+config.json
+
+# 作業用フォルダ
+processed/
+unzipped/
+stamped/
+print_b5/
+AutoPrint_Test/
+
+# エディタ関連
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS関連
+.DS_Store
+Thumbs.db

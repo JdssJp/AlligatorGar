@@ -1,0 +1,94 @@
+# Pre-commit設定
+# コミット前に自動でコード品質チェックを実行
+
+repos:
+  # 基本的なファイルチェック
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace        # 行末空白削除
+      - id: end-of-file-fixer         # ファイル末尾改行修正
+      - id: check-yaml                # YAML構文チェック
+      - id: check-json                # JSON構文チェック
+      - id: check-toml                # TOML構文チェック
+      - id: check-merge-conflict      # マージコンフリクトチェック
+      - id: check-case-conflict       # ファイル名大文字小文字衝突チェック
+      - id: check-docstring-first     # docstring位置チェック
+      - id: debug-statements          # debugステートメント検出
+      - id: name-tests-test          # テストファイル名チェック
+      - id: requirements-txt-fixer    # requirements.txt整形
+
+  # Python コードフォーマット
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black
+        language_version: python3
+        args: ['--line-length=88']
+
+  # インポート順序整理
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        args: ["--profile", "black", "--line-length=88"]
+
+  # flake8 リンティング
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        args: 
+          - '--max-line-length=88'
+          - '--extend-ignore=E203,W503'  # blackとの互換性
+          - '--per-file-ignores=__init__.py:F401'
+
+  # 型チェック
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.3.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-all]
+        args: [--ignore-missing-imports]
+
+  # セキュリティチェック
+  - repo: https://github.com/pycqa/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        args: ['-c', 'pyproject.toml']
+        additional_dependencies: ['bandit[toml]']
+
+  # Pythonコード品質チェック
+  - repo: https://github.com/pycqa/pylint
+    rev: v2.17.4
+    hooks:
+      - id: pylint
+        args: 
+          - '--disable=missing-docstring'
+          - '--disable=invalid-name'
+          - '--max-line-length=88'
+
+# 除外ファイル・ディレクトリ
+exclude: |
+  (?x)^(
+      venv/.*|
+      build/.*|
+      dist/.*|
+      \.git/.*|
+      __pycache__/.*|
+      .*\.pyc$|
+      .*\.egg-info/.*
+  )$
+
+# デフォルト言語バージョン
+default_language_version:
+  python: python3
+
+# フック失敗時の動作
+fail_fast: false
+
+# CIでのキャッシュ設定
+ci:
+  autofix_prs: true
+  autoupdate_commit_msg: '🔄 pre-commit autoupdate'

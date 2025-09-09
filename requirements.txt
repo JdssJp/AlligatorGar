@@ -11,4 +11,4 @@ Pillow==8.4.0
 reportlab==3.6.0
 
 # Executable generation (development only)
-pyinstaller==5.13.2
+pyinstaller==6.15.0
